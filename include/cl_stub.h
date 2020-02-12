@@ -4,7 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+
+#ifdef __linux__
 #include <dlfcn.h>
+#define LIBTYPE void*
+#define OPENLIB(libname) dlopen((libname), RTLD_LAZY)
+#define CLOSELIB(libname) dlclose((libname))
+#elif _WIN32
+#include <windows.h>
+#define LIBTYPE HINSTANCE
+#define OPENLIB(libname) LoadLibraryA(libname)
+#define CLOSELIB(libname) FreeLibrary(libname)
+# define dlsym GetProcAddress
+#endif
+
 #include <CL/cl.h>
 #include <CL/cl_gl.h>
 

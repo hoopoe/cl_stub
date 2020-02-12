@@ -11,7 +11,7 @@
 
 #include <cl_stub.h>
 
-static void *so_handle = NULL;
+static LIBTYPE so_handle = NULL;
 
 
 static int access_file(const char *filename) {
@@ -90,6 +90,9 @@ static int open_libopencl_so() {
 
         }
 #endif
+#if defined(_WIN32)
+        path = default_so_paths[0];
+#endif
     }
 
     if (path) {
@@ -98,7 +101,8 @@ static int open_libopencl_so() {
         #else
             printf("\nopen OpenCL library at %s\n", path);
         #endif
-        so_handle = dlopen(path, RTLD_LAZY);
+
+        so_handle = OPENLIB(path);
         return 0;
     } else {
         return -1;
@@ -106,8 +110,9 @@ static int open_libopencl_so() {
 }
 
 void stubOpenclReset() {
-    if (so_handle)
-        dlclose(so_handle);
+    if (so_handle) {
+        CLOSELIB(so_handle);
+    }
 
     so_handle = NULL;
 }

@@ -16,7 +16,7 @@ int main() {
         std::cout << " No platforms found. Check OpenCL installation!\n";
         exit(1);
     }
-    cl::Platform default_platform = all_platforms[0];
+    cl::Platform default_platform = all_platforms[1];
     std::cout << "Using platform: " << default_platform.getInfo<CL_PLATFORM_NAME>() << "\n";
 
     // get default device (CPUs, GPUs) of the default platform
@@ -36,7 +36,7 @@ int main() {
         }
     }
 
-#if defined(__ANDROID__) || defined(ANDROID)
+#if defined(__ANDROID__) || defined(ANDROID) ||defined(_WIN32)
     // device[0] is usually the GPU on Android
     cl::Device default_device = all_devices[0];
 #else
@@ -79,7 +79,8 @@ int main() {
 
     // apparently OpenCL only likes arrays ...
     // N holds the number of elements in the vectors we want to add
-    int N[1] = {20};
+    const int cx = 20;
+    int N[1] = {cx};
     int n = N[0];
 
     // create buffers on device (allocate space on GPU)
@@ -89,7 +90,7 @@ int main() {
     cl::Buffer buffer_N(context, CL_MEM_READ_ONLY, sizeof(int));
 
     // create things on here (CPU)
-    int A[n], B[n];
+    int A[cx], B[cx];
     for (int i = 0; i < n; i++) {
         A[i] = i;
         B[i] = n - i - 1;
@@ -107,7 +108,7 @@ int main() {
                                  cl::NullRange);
     simple_add(buffer_A, buffer_B, buffer_C, buffer_N);
 
-    int C[n];
+    int C[cx];
     // read result from GPU to here
     queue.enqueueReadBuffer(buffer_C, CL_TRUE, 0, sizeof(int) * n, C);
 
