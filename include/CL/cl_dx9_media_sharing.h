@@ -31,14 +31,14 @@
 #ifndef __OPENCL_CL_DX9_MEDIA_SHARING_H
 #define __OPENCL_CL_DX9_MEDIA_SHARING_H
 
-#include "cl.h"
-#include "cl_platform.h"
+#include <CL/cl.h>
+#include <CL/cl_platform.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/******************************************************************************
+/******************************************************************************/
 /* cl_khr_dx9_media_sharing                                                   */
 #define cl_khr_dx9_media_sharing 1
 

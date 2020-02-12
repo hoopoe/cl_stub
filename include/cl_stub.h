@@ -1,6 +1,9 @@
 #ifndef LIBOPENCL_STUB_H
 #define LIBOPENCL_STUB_H
 
+#define CL_TARGET_OPENCL_VERSION 200
+#include <CL/cl2.hpp>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -17,9 +20,6 @@
 #define CLOSELIB(libname) FreeLibrary(libname)
 # define dlsym GetProcAddress
 #endif
-
-#include <CL/cl.h>
-#include <CL/cl_gl.h>
 
 #if defined(__APPLE__) || defined(__MACOSX)
 static const char *default_so_paths[] = {
@@ -101,7 +101,7 @@ typedef cl_int (*f_clReleaseContext)(cl_context);
 
 typedef cl_int (*f_clGetContextInfo)(cl_context, cl_context_info, size_t, void *, size_t *);
 
-typedef cl_command_queue (*f_clCreateCommandQueue)(cl_context, cl_device_id, cl_command_queue_properties, cl_int *);
+//typedef cl_command_queue (*f_clCreateCommandQueue)(cl_context, cl_device_id, cl_command_queue_properties, cl_int *);
 
 typedef cl_int (*f_clRetainCommandQueue)(cl_command_queue);
 
@@ -296,9 +296,9 @@ typedef cl_mem (*f_clCreateFromGLTexture)(cl_context, cl_mem_flags, cl_GLenum, c
 
 typedef cl_mem (*f_clCreateFromGLRenderbuffer)(cl_context, cl_mem_flags, cl_GLuint, cl_int *);
 
-typedef cl_int (*f_clGetGLObjectInfo)(cl_mem memobj, cl_gl_object_type *, cl_GLuint *);
+//typedef cl_int (*f_clGetGLObjectInfo)(cl_mem memobj, cl_gl_object_type *, cl_GLuint *);
 
-typedef cl_int (*f_clGetGLTextureInfo)(cl_mem, cl_gl_texture_info, size_t, void *, size_t *);
+//typedef cl_int (*f_clGetGLTextureInfo)(cl_mem, cl_gl_texture_info, size_t, void *, size_t *);
 
 typedef cl_int (*f_clEnqueueAcquireGLObjects)(cl_command_queue, cl_uint, const cl_mem *, cl_uint,
                                               const cl_event *, cl_event *);
@@ -310,11 +310,39 @@ typedef cl_mem (*f_clCreateFromGLTexture2D)(cl_context, cl_mem_flags, cl_GLenum,
 
 typedef cl_mem (*f_clCreateFromGLTexture3D)(cl_context, cl_mem_flags, cl_GLenum, cl_GLint, cl_GLuint, cl_int *);
 
-typedef cl_int (*f_clGetGLContextInfoKHR)(const cl_context_properties *, cl_gl_context_info, size_t,
-                                          void *, size_t *);
+//typedef cl_int (*f_clGetGLContextInfoKHR)(const cl_context_properties *, cl_gl_context_info, size_t,
+                                          //void *, size_t *);
 
 // Additional api to reset currently opened opencl shared-object
 // Subsequent calls will use newly set environment variables
 void stubOpenclReset();
 
+
+//---------------------------extra
+typedef cl_command_queue (*f_clCreateCommandQueueWithProperties)(cl_context, cl_device_id, const cl_queue_properties *, cl_int *);
+
+typedef cl_mem (*f_clCreatePipe)(cl_context, cl_mem_flags, cl_uint, cl_uint, const cl_pipe_properties *, cl_int *);
+
+typedef void *(*f_clSVMAlloc)(cl_context, cl_svm_mem_flags, size_t, cl_uint);
+
+typedef void (*f_clSVMFree)(cl_context, void *);
+
+typedef cl_int(*f_clSetKernelArgSVMPointer)(cl_kernel, cl_uint, const void *);
+
+typedef cl_int(*f_clSetKernelExecInfo)(cl_kernel, cl_kernel_exec_info, size_t, const void *);
+
+typedef cl_int(*f_clEnqueueSVMFree)(cl_command_queue, cl_uint, void *,
+    void (CL_CALLBACK *)(cl_command_queue queue,
+        cl_uint,
+        void *,
+        void *),
+    void *, cl_uint, const cl_event *, cl_event *);
+
+typedef cl_int(*f_clEnqueueSVMMap)(cl_command_queue, cl_bool,
+    cl_map_flags, void *, size_t, cl_uint, const cl_event *, cl_event *);
+
+typedef cl_int(*f_clEnqueueSVMUnmap)(cl_command_queue, void *, cl_uint, const cl_event *, cl_event *);
+
 #endif    // LIBOPENCL_STUB_H
+
+
