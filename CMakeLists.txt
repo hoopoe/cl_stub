@@ -19,14 +19,14 @@ endif ()
 #install(FILES "include/cl_stub.h" DESTINATION include)
 #install(DIRECTORY "include/CL" DESTINATION include)
 
-add_executable(test_stub test_stub.cpp)
-target_link_libraries(test_stub cl_stub)
+add_executable(test_stub2 test_stub2.cpp)
+target_link_libraries(test_stub2 cl_stub)
 
 if (UNIX AND NOT APPLE) # Linux system
-    set_property(TARGET test_stub PROPERTY LINK_FLAGS "-Wl,--no-as-needed -ldl")
+    set_property(TARGET test_stub2 PROPERTY LINK_FLAGS "-Wl,--no-as-needed -ldl")
 endif ()
 
-target_include_directories(test_stub PRIVATE include)
+target_include_directories(test_stub2 PRIVATE include)
 if (ANDROID)
-    target_link_libraries(test_stub log)
+    target_link_libraries(test_stub2 log)
 endif ()

@@ -8,7 +8,7 @@
  *
  *   If none of these are set, default system paths will be considered
 **/
-
+//#define CL_TARGET_OPENCL_VERSION 200
 #include <cl_stub.h>
 
 static LIBTYPE so_handle = NULL;
@@ -43,56 +43,6 @@ static int open_libopencl_so() {
                 break;
             }
         }
-#if defined(__ANDROID__) || defined(ANDROID)
-        pid_t pid = getpid();
-        char app_pkg_cmd[64] = { 0 };
-        sprintf(app_pkg_cmd, "/proc/%d/cmdline", pid);
-        FILE *pkg_cmd = fopen(app_pkg_cmd, "r");
-        char application_id[64] = { 0 };
-        if (pkg_cmd) {
-            fread(application_id, sizeof(application_id), 1, pkg_cmd);
-            //            LOGI("\n app pkg name %ld %s\n", strlen(application_id), application_id);
-            fclose(pkg_cmd);
-        }
-        char code_path_cmd[128] = { 0 };
-        sprintf(code_path_cmd, "pm path %s", application_id);
-        FILE *path_cmd = popen(code_path_cmd, "r");
-        if (path_cmd) {
-            char code_path[512] = { 0 };
-            fread(code_path, sizeof(code_path), 1, path_cmd);
-            //            LOGI("\n code path %ld %s\n", strlen(code_path), code_path);
-            fclose(path_cmd);
-            if (strlen(code_path) > 511) {
-                LOGW("\n app pkg name:%s too long, usually means they are split apks\n", code_path);
-            }
-            //only get the first line
-            for (int j = 0; j < 512; ++j) {
-                if (code_path[j] == '\n') {
-                    code_path[j] = '\0';
-                    break;
-                }
-            }
-            // process output to get real code path
-            const char *prefix = "package:";
-            const char *suffix = "/base.apk";
-            size_t prefix_len = strlen(prefix);
-            size_t suffix_len = strlen(suffix);
-            char real_code_path[strlen(code_path)];
-            //            LOGI("\n code_path %ld %s\n", strlen(code_path), code_path);
-
-            memcpy(real_code_path, &code_path[prefix_len], strlen(code_path) - prefix_len - suffix_len);
-            real_code_path[strlen(code_path) - prefix_len - suffix_len] = '\0';
-
-            //            LOGI("\n real_code_path %ld %s\n", strlen(real_code_path), real_code_path);
-            path = (char *)malloc((strlen(real_code_path) + 25) * sizeof(char *));
-#if defined(__aarch64__)
-            sprintf(path, "%s/lib/arm64/libOpenCL.so", real_code_path);
-#else
-            sprintf(path, "%s/lib/arm/libOpenCL.so", real_code_path);
-#endif
-
-        }
-#endif
 #if defined(_WIN32)
         path = (char*)default_so_paths[0];
 #endif
