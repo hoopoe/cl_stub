@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.4)
-project(cl_stub)
+project(cl_stub CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(cl_stub SHARED cl_stub.c)
+add_library(cl_stub cl_stub.cpp include/cl_stub.h)
+
 target_include_directories(cl_stub PRIVATE include)
 if (ANDROID)
     set_target_properties(cl_stub
@@ -14,17 +15,18 @@ if (ANDROID)
     target_link_libraries(cl_stub log)
 endif ()
 
-install(TARGETS "cl_stub" LIBRARY DESTINATION lib PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES "include/cl_stub.h" DESTINATION include)
-install(DIRECTORY "include/CL" DESTINATION include)
+#install(TARGETS "cl_stub" LIBRARY DESTINATION lib PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+#install(FILES "include/cl_stub.h" DESTINATION include)
+#install(DIRECTORY "include/CL" DESTINATION include)
 
-add_executable(test_stub test_stub.cc cl_stub.c)
+add_executable(test_stub2 test_stub2.cpp)
+target_link_libraries(test_stub2 cl_stub)
 
 if (UNIX AND NOT APPLE) # Linux system
-    set_property(TARGET test_stub PROPERTY LINK_FLAGS "-Wl,--no-as-needed -ldl")
+    set_property(TARGET test_stub2 PROPERTY LINK_FLAGS "-Wl,--no-as-needed -ldl")
 endif ()
 
-target_include_directories(test_stub PRIVATE include)
+target_include_directories(test_stub2 PRIVATE include)
 if (ANDROID)
-    target_link_libraries(test_stub log)
+    target_link_libraries(test_stub2 log)
 endif ()
