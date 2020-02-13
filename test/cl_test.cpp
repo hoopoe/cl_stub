@@ -33,7 +33,7 @@ int main(void)
         std::cout << "Error setting default platform.";
         return -1;
     }
-
+/*
     // Test command queue property construction
     cl::CommandQueue q5(cl::QueueProperties::Profiling | cl::QueueProperties::OutOfOrder);
 
@@ -261,6 +261,6 @@ int main(void)
         std::cout << "\t" << e << "\n";
     }
     std::cout << "\n\n";
-
+*/
     return 0;
 }

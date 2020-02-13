@@ -9,7 +9,7 @@
  *   If none of these are set, default system paths will be considered
 **/
 //#define CL_TARGET_OPENCL_VERSION 200
-#include <cl_stub.h>
+#include "cl_stub.h"
 
 static LIBTYPE so_handle = NULL;
 

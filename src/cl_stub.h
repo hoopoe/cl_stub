@@ -1,8 +1,7 @@
 #ifndef LIBOPENCL_STUB_H
 #define LIBOPENCL_STUB_H
 
-//#define CL_TARGET_OPENCL_VERSION 200
-//#include <CL/cl2.hpp>
+#define CL_TARGET_OPENCL_VERSION 200
 #include <CL/cl.h>
 
 #include <stdio.h>
