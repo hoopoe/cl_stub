@@ -344,6 +344,9 @@ typedef cl_int(*f_clEnqueueSVMMap)(cl_command_queue, cl_bool,
 
 typedef cl_int(*f_clEnqueueSVMUnmap)(cl_command_queue, void *, cl_uint, const cl_event *, cl_event *);
 
+typedef cl_int(*f_clEnqueueSVMMemcpy)(cl_command_queue, cl_bool, void *, const void *, size_t, cl_uint, const cl_event *, cl_event *);
+typedef cl_int(*f_clEnqueueSVMMemFill)(cl_command_queue, void *, const void *, size_t, size_t, cl_uint, const cl_event *, cl_event *);
+
 #endif    // LIBOPENCL_STUB_H
 
 

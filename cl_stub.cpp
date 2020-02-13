@@ -2287,3 +2287,51 @@ clEnqueueSVMUnmap(cl_command_queue   command_queue,
         return CL_INVALID_PLATFORM;
     }
 }
+
+cl_int
+clEnqueueSVMMemcpy(cl_command_queue  command_queue ,
+                   cl_bool           blocking_copy ,
+                   void *            dst_ptr ,
+                   const void *      src_ptr ,
+                   size_t            size ,
+                   cl_uint           num_events_in_wait_list ,
+                   const cl_event *  event_wait_list ,
+                   cl_event *        event )
+{
+    f_clEnqueueSVMMemcpy func;
+
+    if (!so_handle)
+        open_libopencl_so();
+
+    func = (f_clEnqueueSVMMemcpy)dlsym(so_handle, "clEnqueueSVMMemcpy");
+    if (func) {
+        return func(command_queue, blocking_copy, dst_ptr, src_ptr, size, num_events_in_wait_list, event_wait_list, event);
+    }
+    else {
+        return CL_INVALID_PLATFORM;
+    }
+}
+
+cl_int
+clEnqueueSVMMemFill(cl_command_queue  command_queue ,
+                    void *            svm_ptr ,
+                    const void *      pattern ,
+                    size_t            pattern_size ,
+                    size_t            size ,
+                    cl_uint           num_events_in_wait_list ,
+                    const cl_event *  event_wait_list ,
+                    cl_event *        event )
+{
+    f_clEnqueueSVMMemFill func;
+
+    if (!so_handle)
+        open_libopencl_so();
+
+    func = (f_clEnqueueSVMMemFill)dlsym(so_handle, "clEnqueueSVMMemFill");
+    if (func) {
+        return func(command_queue, svm_ptr, pattern, pattern_size, size, num_events_in_wait_list, event_wait_list, event);
+    }
+    else {
+        return CL_INVALID_PLATFORM;
+    }
+}
