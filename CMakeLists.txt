@@ -8,6 +8,6 @@ add_subdirectory(src)
 
 option( OPENCL_TESTS "Enable OpenCL Tests" OFF )
 
-if( DEBUG_LOG_MACROS )
+if( OPENCL_TESTS )
   add_subdirectory(test)
 endif()

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__MACOSX) || defined(__APPLE__)
 #include <dlfcn.h>
 #define LIBTYPE void*
 #define OPENLIB(libname) dlopen((libname), RTLD_LAZY)
